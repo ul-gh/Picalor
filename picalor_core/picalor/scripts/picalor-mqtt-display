@@ -1,0 +1,86 @@
+#!/usr/bin/env python3
+import sys
+import getopt
+import time
+import json
+import paho.mqtt.client
+from pipyadc.utils import TextScreen
+from picalor.picalor_state import PicalorConfig
+
+
+screen = TextScreen()
+
+def text_format_4_ch(digits, resistances, temperatures):
+    d_strs = [f"{int(i): 9d}" if i else "      n/a" for i in digits]
+    r_strs = [f"{i: 9.3f}" if i else "      n/a" for i in resistances]
+    t_strs = [f"{i: 9.3f}" if i else "      n/a" for i in temperatures]
+    text = ("                    ch1,       ch2,       ch3,       ch4\n"
+            f"Raw samples:  {', '.join(d_strs)}\n"
+            f"Resistances:  {', '.join(r_strs)}\n"
+            f"Temperatures: {', '.join(t_strs)}\n"
+            )
+    return text
+
+def display_flow_sensors(flow_sensors):
+    for i, sensor in enumerate(flow_sensors):
+        flow = sensor['liter_sec']
+        flow_str = f"{flow*1000 :5.1f}" if flow else '  n/a'
+        screen.put(f"Flow sensor {i} flow: {flow_str} ml/s")
+    screen.put("")
+
+def display_adcs(adcs):
+    for adc in ["adc_1", "adc_2"]:
+        digits = [adcs[adc]["temp_chs"][i]["adc_unscaled"] for i in range(4)]
+        resistances = [adcs[adc]["temp_chs"][i]["resistance"] for i in range(4)]
+        temperatures = [adcs[adc]["temp_chs"][i]["temperature"] for i in range(4)]
+        screen.put(f"\nResults for {adc.upper()}:\n")
+        screen.put(text_format_4_ch(digits, resistances, temperatures))
+        v = adcs[adc]['r_ref']['adc_unscaled']
+        screen.put(f"r_ref adc_unscaled: {int(v) if v else v}")
+
+def on_data(_client, _userdata, msg):
+    data = json.loads(msg.payload)
+    display_flow_sensors(data["flow_sensors"])
+    display_adcs(data["adcs"])
+    screen.refresh()
+
+def pprint_msg(_client, _userdata, msg):
+    data = json.loads(msg.payload)
+    pprint_str = json.dumps(data, indent=4)
+    print(pprint_str)
+
+print("\n")
+config = PicalorConfig(None)
+data_topic = config["mqtt"]["CORE_DATA_TOPIC"]
+
+host = config["mqtt"]["BROKER_HOST"]
+port = int(config["mqtt"]["MQTT_PORT"])
+
+on_message = on_data
+
+OPTIONS_LIST = "h:p:m"
+opts, _extra_args = getopt.getopt(sys.argv[1:], OPTIONS_LIST)
+for opt, arg in opts:
+    if opt == "-h":
+        host = arg
+    if opt == "-p":
+        port = int(arg)
+    if opt == "-m":
+        on_message = pprint_msg
+
+print(f"MQTT host: {host}")
+print(f"MQTT port: {port}")
+c = paho.mqtt.client.Client()
+c.on_message = on_message
+c.connect(host, port)
+
+print(f"Subscribing to data topic: {data_topic}")
+c.subscribe(f"{data_topic}/+")
+c.loop_start()
+print("\n\nPicalor MQTT Debug Display Running.  Press CTRL-C to exit!\n")
+
+try:
+    while True:
+        time.sleep(1e9)
+except KeyboardInterrupt:
+    print("\nUser Exit.\n")

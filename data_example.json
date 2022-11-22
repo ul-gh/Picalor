@@ -1,0 +1,144 @@
+{
+    "title": "Picalor Measurement Results",
+    "measurements": {
+        "chs": [
+            {
+                "info": "M1 (ADC1)",
+                "t_upstream": 0.47116119813317886,
+                "t_downstream": 8.086074947616833,
+                "flow_kg_sec": 0.010965994129450277,
+                "power_w": 255.11321167889957
+            },
+            {
+                "info": "M2 (ADC1)",
+                "t_upstream": 8.086074947616833,
+                "t_downstream": 1357.6977700746152,
+                "flow_kg_sec": 0.010965994129450277,
+                "power_w": 52063.891772554394
+            },
+            {
+                "info": "M3 (ADC2)",
+                "t_upstream": 1405.6511856357945,
+                "t_downstream": 1405.7214950887108,
+                "flow_kg_sec": -0.2310976368112463,
+                "power_w": -68.50303691527859
+            },
+            {
+                "info": "M4 (ADC2)",
+                "t_upstream": 1405.7214950887108,
+                "t_downstream": 1405.886328141129,
+                "flow_kg_sec": -0.2310976368112463,
+                "power_w": -160.59810176759655
+            }
+        ]
+    },
+    "adcs": {
+        "adc_1": {
+            "r_ref": {
+                "adc_unscaled": 3324042.5
+            },
+            "temp_chs": [
+                {
+                    "adc_unscaled": -269363.0,
+                    "resistance": 1001.8413111097782,
+                    "temperature": 0.47116119813317886
+                },
+                {
+                    "adc_unscaled": -187228.5,
+                    "resistance": 1031.5650471066174,
+                    "temperature": 8.086074947616833
+                },
+                {
+                    "adc_unscaled": 8388607.0,
+                    "resistance": 5241.759476647745,
+                    "temperature": 1357.6977700746152
+                },
+                {
+                    "adc_unscaled": null,
+                    "resistance": null,
+                    "temperature": null
+                },
+                {
+                    "adc_unscaled": null,
+                    "resistance": null,
+                    "temperature": null
+                },
+                {
+                    "adc_unscaled": null,
+                    "resistance": null,
+                    "temperature": null
+                },
+                {
+                    "adc_unscaled": null,
+                    "resistance": null,
+                    "temperature": null
+                }
+            ]
+        },
+        "adc_2": {
+            "r_ref": {
+                "adc_unscaled": 3335333.0
+            },
+            "temp_chs": [
+                {
+                    "adc_unscaled": 8388607.0,
+                    "resistance": 5352.650118665572,
+                    "temperature": 1405.6511856357945
+                },
+                {
+                    "adc_unscaled": 8388607.0,
+                    "resistance": 5352.81075694202,
+                    "temperature": 1405.7214950887108
+                },
+                {
+                    "adc_unscaled": 536.5,
+                    "resistance": 5353.187333953706,
+                    "temperature": 1405.886328141129
+                },
+                {
+                    "adc_unscaled": null,
+                    "resistance": null,
+                    "temperature": null
+                },
+                {
+                    "adc_unscaled": null,
+                    "resistance": null,
+                    "temperature": null
+                },
+                {
+                    "adc_unscaled": null,
+                    "resistance": null,
+                    "temperature": null
+                },
+                {
+                    "adc_unscaled": null,
+                    "resistance": null,
+                    "temperature": null
+                }
+            ]
+        }
+    },
+    "flow_sensors": [
+        {
+            "info": "Fixed Flow 1",
+            "liter_sec": 0.01
+        },
+        {
+            "info": "Flow Sensor 1",
+            "liter_sec": 0.004579413054867445
+        },
+        {
+            "info": "Flow Sensor 2",
+            "liter_sec": null
+        },
+        {
+            "info": "Flow Sensor 3",
+            "liter_sec": null
+        },
+        {
+            "info": "Flow Sensor 4",
+            "liter_sec": null
+        }
+    ],
+    "data_log": null
+}

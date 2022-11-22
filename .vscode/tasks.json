@@ -1,0 +1,35 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "copyOnPi",
+            "type": "shell",
+            "command": "scp '${file}' '${config:sshUser}@${config:sshEndpoint}:'$(echo '${config:remoteBaseFolder}/${workspaceFolderBasename}/${relativeFile}' | tr '\\\\\\\\' '/')",
+            "problemMatcher": []
+        },
+        {
+            "label": "startOnPi",
+            "type": "shell",
+            "command": "ssh '${config:sshUser}@${config:sshEndpoint}' 'nohup python3 -m ptvsd --host 0.0.0.0 --port 5678 --wait $(echo '${config:remoteBaseFolder}/${workspaceFolderBasename}/${relativeFile}' | tr '\\\\\\\\' '/') > /dev/null 2>&1 &'"
+        },
+        {
+            "label": "wait",
+            "type": "shell",
+            "command": "timeout 5"
+        },
+        {
+            "label": "copyAndStartOnPi",
+            "dependsOrder": "sequence",
+            "dependsOn": [
+                "copyOnPi",
+                "startOnPi",
+                "wait"
+            ]
+        },
+        {
+            "label": "cleanupOnPi",
+            "type": "shell",
+            "command": "ssh ${config:sshUser}@${config:sshEndpoint} 'pkill -9 python'"
+        }
+    ]
+}

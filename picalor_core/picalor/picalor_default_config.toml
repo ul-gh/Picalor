@@ -1,0 +1,513 @@
+title = "Picalor Configuration"
+
+# This configuration file is a TOML document.
+# For TOML reference, see: https://github.com/toml-lang/toml
+# 2022-08-08 Ulrich Lukas
+
+####################  Display settings for chart/graph display on picalor app
+[display_settings]
+    power_chart_min_w = 0
+    power_chart_max_w = 150
+
+####################  Fluid medium properties
+# This section configures properties of of the thermal fluid density
+# and gravimetric specific thermal capacity.
+# This can use either tables for a piecewise linear interpolation or
+# numerator/denominator for a polynomial approximation, both in terms of
+# temperature in °C.
+[fluids]
+    [fluids.glycol_60]
+    info = "Ethylene Glycol 60%"
+    # This is for a mixture of 60% by volume ethylene glycol and water.
+    density_use_polynomial = false
+    #
+    #
+    # Density, source: graph data,
+    # BASF "GLYSANTIN Graphs", September 2016, page 3
+    density_t_ref = [
+        -40, -30, -20, -10,   0,  10,  20,
+        30,  40,  50,  60,  70,  80,  90,
+        100, 110
+    ]
+    density_values = [
+        1.120010, 1.114359, 1.108554, 1.102760, 1.096879, 1.090945, 1.085007,
+        1.078812, 1.072367, 1.065847, 1.059047, 1.051983, 1.044773, 1.037459,
+        1.030002, 1.022522
+    ]
+
+    c_th_use_polynomial = false
+    # Thermal capcity, source: graph data,
+    # BASF "GLYSANTIN Graphs", September 2016, page 5
+    c_th_t_ref = [
+        -40, -35, -30, -25, -20, -15, -10, -5,
+        0,   5,  10,  15,  20,  25,  30, 35,
+        40,  45,  50,  55,  60,  65,  70, 75,
+        80,  85,  90,  95, 100, 105
+    ]
+    c_th_values = [
+        2703.30, 2749.60, 2793.74, 2838.47, 2879.21, 2919.42, 2955.72, 2992.30,
+        3026.66, 3059.85, 3092.32, 3122.75, 3152.32, 3181.33, 3208.28, 3259.96,
+        3234.92, 3285.54, 3309.36, 3331.49, 3354.35, 3375.35, 3396.78, 3415.90,
+        3435.59, 3454.44, 3471.16, 3487.49, 3503.92, 3517.87
+    ]
+
+    [fluids.water]
+    info = "Pure water 100%"
+    density_use_polynomial = true
+    # 5-th order polynomial for the density of water depending on the
+    # temperature according to the ITS-90 scale.
+    # 
+    # Result is density in g/cm³.
+    # 
+    # Source: Bettin, H.,"Die Dichte des Wassers als Funktion der
+    # Temperatur nach Einführung der Internationalen Temperaturskala
+    # von 1990.", PTB Mitteilungen, 1990, 100(3), pg. 195 - 196
+    density_numerator = [
+        -2.8103006E-10, 1.0584601E-7, -4.6241757E-5,
+        -7.9905127E-3,  1.6952577E+1,  9.9983952E+2
+    ]
+    density_denominator = [1.6887200E+1, 1000.0]
+
+    c_th_use_polynomial = false
+    # Thermal capcity, source: graph data,
+    # BASF "GLYSANTIN Graphs", September 2016, page 5
+    c_th_t_ref = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
+    c_th_values = [
+        4217.7, 4192.2, 4181.9, 4178.5, 4178.6, 4180.7,
+        4184.4, 4189.6, 4196.4, 4205.1, 4216.0
+    ]
+
+####################  Measurement channel configuration
+[measurements]
+# Time between each full sequence of measurements
+scan_interval_s = 10
+# Log data to file if this is enabled
+datalog_enabled = false
+# Average output of this number of input scan cycles before updating output
+# FILTER_SIZE = 16
+FILTER_SIZE = 2
+# Default channel
+
+    [measurements.default_ch]
+    info = "M1 (ADC1)"
+    active = true
+    adc_device = "adc_1"
+    # Upstream and downstream Hardware temperature sensing channels
+    temp_ch_up = 0
+    temp_ch_dn = 1
+    # Platinum RTD base (0°C) resistance values, upstream and downstream sensor
+    # r_0_up, r_0_dn = 1000.000
+    r_0_up = 1000.000
+    r_0_dn = 1000.000
+    # Resistance offset for external wiring resistance upstream and downstream
+    r_wires_up = 0.000
+    r_wires_dn = 0.000
+    flow_sensor = 0
+    # This ADC channel is used for fluid density calculation.
+    # This ADC channel must be configured in at least one of all measurements
+    # as the flow meter temperature channel is not individually scanned.
+    flow_sensor_temp_ch = 0
+    fluid = "glycol_60"
+    power_offset = 0.0
+    power_gain = 1.0
+
+    # Individually configurable measurements.
+    # Array of dictionaries / Javascript objects
+    [[measurements.chs]]
+    info = "M1 (ADC1)"
+    active = true
+    adc_device = "adc_1"
+    # Upstream and downstream Hardware temperature sensing channels
+    temp_ch_up = 0
+    temp_ch_dn = 1
+    # Platinum RTD base (0°C) resistance values, upstream and downstream sensor
+    # r_0_up, r_0_dn = 1000.000
+    r_0_up = 1000.000
+    r_0_dn = 1000.000
+    # Resistance offset for external wiring resistance upstream and downstream
+    r_wires_up = 0.000
+    r_wires_dn = 0.000
+    flow_sensor = 0
+    # This ADC channel is used for fluid density calculation.
+    # This ADC channel must be configured in at least one of all measurements
+    # as the flow meter temperature channel is not individually scanned.
+    flow_sensor_temp_ch = 0
+    fluid = "glycol_60"
+    power_offset = 0.0
+    power_gain = 1.0
+
+    [[measurements.chs]]
+    info = "M2 (ADC1)"
+    active = false
+    adc_device = "adc_1"
+    # Upstream and downstream Hardware temperature sensing channels
+    temp_ch_up = 1
+    temp_ch_dn = 2
+    # Platinum RTD base (0°C) resistance values, upstream and downstream sensor
+    # r_0_up, r_0_dn = 1000.000
+    r_0_up = 1000.000
+    r_0_dn = 1000.000
+    # Resistance offset for external wiring resistance upstream and downstream
+    r_wires_up = 0.000
+    r_wires_dn = 0.000
+    flow_sensor = 0
+    flow_sensor_temp_ch = 0
+    fluid = "glycol_60"
+    power_offset = 0.0
+    power_gain = 1.0
+
+    [[measurements.chs]]
+    active = true
+    info = "M3 (ADC2)"
+    adc_device = "adc_2"
+    # Upstream and downstream Hardware temperature sensing channels
+    temp_ch_up = 0
+    temp_ch_dn = 1
+    # Platinum RTD base (0°C) resistance values, upstream and downstream sensor
+    # r_0_up, r_0_dn = 1000.000
+    r_0_up = 1000.000
+    r_0_dn = 1000.000
+    # Resistance offset for external wiring resistance upstream and downstream
+    r_wires_up = 0.000
+    r_wires_dn = 0.000
+    flow_sensor = 1
+    flow_sensor_temp_ch = 0
+    fluid = "water"
+    power_offset = 0.0
+    power_gain = 1.0
+
+    [[measurements.chs]]
+    active = true
+    info = "M4 (ADC2)"
+    adc_device = "adc_2"
+    # Upstream and downstream Hardware temperature sensing channels
+    temp_ch_up = 1
+    temp_ch_dn = 2
+    # Platinum RTD base (0°C) resistance values, upstream and downstream sensor
+    # r_0_up, r_0_dn = 1000.000
+    r_0_up = 1000.000
+    r_0_dn = 1000.000
+    # Resistance offset for external wiring resistance upstream and downstream
+    r_wires_up = 0.000
+    r_wires_dn = 0.000
+    flow_sensor = 1
+    flow_sensor_temp_ch = 0
+    fluid = "water"
+    power_offset = 0.0
+    power_gain = 1.0
+
+
+####################  Flow sensor configuration
+[[flow_sensors]]
+# We can use fixed values for fluid flow rate
+type = "fixed"
+info = "Fixed Flow 1"
+# Flow in liters per second
+FLOW_LITER_SEC = 10e-3
+
+# Physical flow sensors to be initialized and started for continuous measurement
+# Array of dictionaries / Javascript objects
+[[flow_sensors]]
+type = "pulse"
+info = "Flow Sensor 1"
+# GPIO pin for the flow sensor impulses using Broadcom numbering scheme
+GPIO = 12
+# Measurement is invalidated (NaN value returned) if no input cycles are
+# received for TIMEOUT microseconds.
+# This value must be smaller than 2^32 (72.6 minutes)
+TIMEOUT_US = 10_000_000
+# Averaging time for flow meter input impulse timer/counter in microseconds.
+# This value must be smaller than 2^32 (72.6 minutes)
+MIN_AVG_PERIOD_US = 3_000_000
+# Sensitivity of flow sensor in pulses per liter
+SENSITIVITY = 8500
+
+[[flow_sensors]]
+type = "pulse"
+info = "Flow Sensor 2"
+GPIO = 13
+TIMEOUT_US = 10_000_000
+MIN_AVG_PERIOD_US = 3_000_000
+SENSITIVITY = 8500
+
+[[flow_sensors]]
+type = "pulse"
+info = "Flow Sensor 3"
+GPIO = 26
+TIMEOUT_US = 10_000_000
+MIN_AVG_PERIOD_US = 3_000_000
+SENSITIVITY = 8500
+
+[[flow_sensors]]
+type = "pulse"
+info = "Flow Sensor 4"
+GPIO = 20
+TIMEOUT_US = 10_000_000
+MIN_AVG_PERIOD_US = 3_000_000
+SENSITIVITY = 8500
+
+####################  Measurement input hardware frontend and ADC configuration
+[adcs]
+    [adcs.adc_1]
+        # Per-device configuration for class ADS1256 of pipyadc package.
+        # See ADS1256_definitions from pipyadc package
+        [adcs.adc_1.ads1256_config]
+        # Data rate. "DRATE_10" is a good value here..
+        drate = "DRATE_10"
+        # PGA gain and other REG_ADCON settings.
+        # CLKOUT must be "CLKOUT_EQUAL" for the /first/ ADC on the Picalor hardware!
+        adcon = ["GAIN_8", "CLKOUT_EQUAL", "SDCS_OFF"]
+        # List of all GPIOs used as chip select pin. Must be identical for all ADCs.
+        CHIP_SELECT_GPIOS_INITIALIZE = [7, 8]
+        # Chip select output GPIO
+        CS_PIN = 8
+        # DRDY input GPIO
+        DRDY_PIN = 5
+        # RESET an PDWN are usually shared for all ADC devices
+        RESET_PIN = 3
+        PDWN_PIN = 2
+        # More settings
+        CHIP_HARD_RESET_ON_START = false
+
+        # Fixed resistance reference (fixed AVCC divider)
+        [adcs.adc_1.aincom]
+        info = "AINCOM Channel (tied to AGND)"
+        # Physical input pins of the ADC (MUX register code values):
+        mux = "NEG_AINCOM"
+
+        # Fixed resistance reference (fixed AVCC divider)
+        [adcs.adc_1.r_ref]
+        info = "Resistance Reference Channel"
+        # Physical input pins of the ADC (MUX register code values):
+        mux = "NEG_AIN0"
+        # System-level (chip-external) channel ofset (ADC digits).
+        adc_offset = -100
+        # Series resistance (bridge high-side) in Ohms
+        # r_s = 9962.59
+        r_s = 9962.59
+        # r_ref = 1100.0
+        r_ref = 1100.0
+
+            # Pt1000 sensor measurement channel configuration
+            # Array of dictionaries / Javascript objects
+            [[adcs.adc_1.temp_chs]]
+            info = "Cold Inlet"
+            mux = "NEG_AIN1"
+            adc_offset = 0
+            # Series resistance (bridge high-side) of Pt1000 sensor channels in Ohms
+            # r_s = 9962.59
+            r_s = 9962.00
+            # Resistance offset for HW channel calibration.
+            r_offset = 0.000
+            # Two-point-calibration known resistances (calibration standards)
+            cal_r_a = 1098.5
+            cal_r_b = 2191.1
+            # Corresponding internal read-out values or false
+            # for an invalidated or not performed user calibration
+            cal_wh_a = false
+            cal_wh_b = false
+
+            [[adcs.adc_1.temp_chs]]
+            info = "Heat Source 1"
+            mux = "NEG_AIN2"
+            adc_offset = 0
+            r_s = 9962.00
+            r_offset = 0.000
+            cal_r_a = 1098.5
+            cal_r_b = 2191.1
+            cal_wh_a = false
+            cal_wh_b = false
+
+            [[adcs.adc_1.temp_chs]]
+            info = "Heat Source 2"
+            mux = "NEG_AIN3"
+            adc_offset = 0
+            r_s = 9962.00
+            r_offset = 0.000
+            cal_r_a = 1098.5
+            cal_r_b = 2191.1
+            cal_wh_a = false
+            cal_wh_b = false
+
+            [[adcs.adc_1.temp_chs]]
+            info = "Heat Source 3"
+            mux = "NEG_AIN4"
+            adc_offset = 0
+            r_s = 9962.00
+            r_offset = 0.000
+            cal_r_a = 1098.5
+            cal_r_b = 2191.1
+            cal_wh_a = false
+            cal_wh_b = false
+
+            [[adcs.adc_1.temp_chs]]
+            info = "Heat Source 4"
+            mux = "NEG_AIN5"
+            adc_offset = 0
+            r_s = 9962.00
+            r_offset = 0.000
+            cal_r_a = 1098.5
+            cal_r_b = 2191.1
+            cal_wh_a = false
+            cal_wh_b = false
+
+            [[adcs.adc_1.temp_chs]]
+            info = "Heat Source 5"
+            mux = "NEG_AIN6"
+            adc_offset = 0
+            r_s = 9962.00
+            r_offset = 0.000
+            cal_r_a = 1098.5
+            cal_r_b = 2191.1
+            cal_wh_a = false
+            cal_wh_b = false
+
+            [[adcs.adc_1.temp_chs]]
+            info = "Heat Source 6"
+            mux = "NEG_AIN7"
+            adc_offset = 0
+            r_s = 9962.00
+            r_offset = 0.000
+            cal_r_a = 1098.5
+            cal_r_b = 2191.1
+            cal_wh_a = false
+            cal_wh_b = false
+
+    [adcs.adc_2]
+        # Per-device configuration for class ADS1256 of pipyadc package.
+        # See ADS1256_definitions from pipyadc package
+        [adcs.adc_2.ads1256_config]
+        # Data rate. "DRATE_10" is a good value here..
+        drate = "DRATE_10"
+        # PGA gain and other REG_ADCON settings.
+        # CLKOUT must be "CLKOUT_EQUAL" for the /first/ ADC on the Picalor hardware!
+        adcon = ["GAIN_8", "CLKOUT_OFF", "SDCS_OFF"]
+        # List of all GPIOs used as chip select pin. Must be identical for all ADCs.
+        CHIP_SELECT_GPIOS_INITIALIZE = [7, 8]
+        # Chip select output GPIO
+        CS_PIN = 7
+        # DRDY input GPIO
+        DRDY_PIN = 6
+        # RESET an PDWN are usually shared for all ADC devices
+        RESET_PIN = 3
+        PDWN_PIN = 2
+        # More settings
+        CHIP_HARD_RESET_ON_START = false
+
+        # Fixed resistance reference (fixed AVCC divider)
+        [adcs.adc_2.aincom]
+        info = "AINCOM Channel (tied to AGND)"
+        # Physical input pins of the ADC (MUX register code values):
+        mux = "NEG_AINCOM"
+
+        # Fixed resistance reference (fixed AVCC divider)
+        [adcs.adc_2.r_ref]
+        info = "Resistance Reference Channel"
+        # Physical input pins of the ADC (MUX register code values):
+        mux = "NEG_AIN0"
+        # System-level (chip-external) channel ofset (ADC digits).
+        adc_offset = -100
+        # Series resistance (bridge high-side) in Ohms
+        # r_s = 9962.59
+        r_s = 9962.59
+        # r_ref = 1100.0
+        r_ref = 1100.0
+
+            # Pt1000 sensor measurement channel configuration
+            [[adcs.adc_2.temp_chs]]
+            info = "Cold Inlet"
+            mux = "NEG_AIN1"
+            adc_offset = 0
+            # Series resistance (bridge high-side) of Pt1000 sensor channels in Ohms
+            # r_s = 9962.59
+            r_s = 9962.00
+            # Resistance offset for HW channel calibration.
+            r_offset = 0.000
+            # Two-point-calibration known resistances (calibration standards)
+            cal_r_a = 1098.5
+            cal_r_b = 2191.1
+            # Corresponding internal read-out values or false
+            # for an invalidated or not performed user calibration
+            cal_wh_a = false
+            cal_wh_b = false
+
+            [[adcs.adc_2.temp_chs]]
+            info = "Heat Source 1"
+            mux = "NEG_AIN2"
+            adc_offset = 0
+            r_s = 9962.00
+            r_offset = 0.000
+            cal_r_a = 1098.5
+            cal_r_b = 2191.1
+            cal_wh_a = false
+            cal_wh_b = false
+
+            [[adcs.adc_2.temp_chs]]
+            info = "Heat Source 2"
+            mux = "NEG_AIN3"
+            adc_offset = 0
+            r_s = 9962.00
+            r_offset = 0.000
+            cal_r_a = 1098.5
+            cal_r_b = 2191.1
+            cal_wh_a = false
+            cal_wh_b = false
+
+            [[adcs.adc_2.temp_chs]]
+            info = "Heat Source 3"
+            mux = "NEG_AIN4"
+            adc_offset = 0
+            r_s = 9962.00
+            r_offset = 0.000
+            cal_r_a = 1098.5
+            cal_r_b = 2191.1
+            cal_wh_a = false
+            cal_wh_b = false
+
+            [[adcs.adc_2.temp_chs]]
+            info = "Heat Source 4"
+            mux = "NEG_AIN5"
+            adc_offset = 0
+            r_s = 9962.00
+            r_offset = 0.000
+            cal_r_a = 1098.5
+            cal_r_b = 2191.1
+            cal_wh_a = false
+            cal_wh_b = false
+
+            [[adcs.adc_2.temp_chs]]
+            info = "Heat Source 5"
+            mux = "NEG_AIN6"
+            adc_offset = 0
+            r_s = 9962.00
+            r_offset = 0.000
+            cal_r_a = 1098.5
+            cal_r_b = 2191.1
+            cal_wh_a = false
+            cal_wh_b = false
+
+            [[adcs.adc_2.temp_chs]]
+            info = "Heat Source 6"
+            mux = "NEG_AIN7"
+            adc_offset = 0
+            r_s = 9962.00
+            r_offset = 0.000
+            cal_r_a = 1098.5
+            cal_r_b = 2191.1
+            cal_wh_a = false
+            cal_wh_b = false
+
+####################  Core MQTT client configuration
+[mqtt]
+BROKER_HOST = "localhost"
+MQTT_PORT = 1883
+WEBSOCKET_PORT = 9001
+# Last part is comand name/key: "cmd/picalor/core/req/[cmd-name]"
+CORE_CMD_REQ_TOPIC = "cmd/picalor/core/req"
+# This is divided further into:
+# "cmd/picalor/core/resp/ok/[cmd-name]" and
+# "cmd/picalor/core/resp/err/[cmd-name]"
+CORE_CMD_RESP_TOPIC = "cmd/picalor/core/resp"
+# Telemetry data. Last part is data subkey: "data/picalor/core/[data-key]"
+CORE_DATA_TOPIC = "data/picalor/core"
+################################################################################

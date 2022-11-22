@@ -1,0 +1,14 @@
+[build-system]
+requires = [
+    "setuptools >= 38.3.0",
+    "wheel",
+    "versioneer-518",
+    "numpy",
+    "tomlkit",
+    "paho-mqtt",
+    "pigpio",
+    "pipyadc"
+]
+
+#[tool.setuptools.packages.find]
+#where = ["picalor_core"]

@@ -1,0 +1,14 @@
+#!/usr/bin/env -S ipython3 -i
+import time
+import logging
+import pigpio
+from picalor import Picalor
+
+logging.basicConfig(level=logging.DEBUG)
+
+pi = pigpio.pi()
+pc = Picalor(pi, interactive=True)
+
+pc.run_app()
+
+print('\nPicalor Core started! Object name: "pc"\n\n')

@@ -1,0 +1,14 @@
+[Unit]
+Description=Picalor Flow Calorimeter HTTPD
+
+[Service]
+Type=simple
+Requires=picalor.service
+After=picalor.service
+ExecStart=/usr/bin/python3 /home/ifx/mysrc/Picalor/picalor_core/picalor/scripts/picalor_httpd.py
+WorkingDirectory=/home/ifx/.picalor
+# StandardOutput=null
+User=ifx
+
+[Install]
+WantedBy=multi-user.target

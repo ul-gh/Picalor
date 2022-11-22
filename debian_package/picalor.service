@@ -1,0 +1,14 @@
+[Unit]
+Description=Picalor Flow Calorimeter System
+
+[Service]
+Type=simple
+Requires=pigpiod.service mosquitto.service
+After=pigpiod.service
+ExecStart=/usr/bin/python3 /home/ifx/.local/bin/picalor
+WorkingDirectory=/home/ifx/.picalor
+# StandardOutput=null
+User=ifx
+
+[Install]
+WantedBy=multi-user.target
