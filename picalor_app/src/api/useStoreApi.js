@@ -163,6 +163,18 @@ export default function useStoreApi(api) {
         return false;
       }
     },
+    async activate__datalog(value) {
+      state.loading = true;
+      let success = false;
+      try {
+        success = await api.query("set__datalog_enabled", value);
+        _show_success("Data log enabled on device!");
+        state.loading = false;
+      } catch (e) {
+        _log_error(e);
+      }
+      return success;
+    },
     set__config_measurements_chs(value) {
       state.config_stale = true;
       state.config.measurements.chs = value;

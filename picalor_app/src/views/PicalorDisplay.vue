@@ -40,7 +40,7 @@
             <v-switch
               label="Enable Datalog"
               v-model="state.config.measurements.datalog_enabled"
-              @change="v => dispatch('set__datalog_enabled', v)"
+              @change="v => dispatch('activate__datalog', v)"
               :autofocus="true"
               class="ml-5"
             >

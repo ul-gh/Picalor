@@ -198,13 +198,6 @@ FILTER_SIZE = 2
 
 
 ####################  Flow sensor configuration
-[[flow_sensors]]
-# We can use fixed values for fluid flow rate
-type = "fixed"
-info = "Fixed Flow 1"
-# Flow in liters per second
-FLOW_LITER_SEC = 10e-3
-
 # Physical flow sensors to be initialized and started for continuous measurement
 # Array of dictionaries / Javascript objects
 [[flow_sensors]]
@@ -245,6 +238,13 @@ GPIO = 20
 TIMEOUT_US = 10_000_000
 MIN_AVG_PERIOD_US = 3_000_000
 SENSITIVITY = 8500
+
+[[flow_sensors]]
+# We can use fixed values for fluid flow rate
+type = "fixed"
+info = "Fixed Flow 1"
+# Flow in liters per second
+FLOW_LITER_SEC = 10e-3
 
 ####################  Measurement input hardware frontend and ADC configuration
 [adcs]
