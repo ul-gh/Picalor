@@ -46,7 +46,7 @@
             >
             </v-switch>
             <v-btn
-              class="ml-2"
+              class="ml-2 white--text"
               color="primary"
               :loading="state.loading"
               :disabled="state.loading"
@@ -56,14 +56,14 @@
             </v-btn>
             <a href="/savedata/" target="_blank">
               <v-btn
-                class="ml-2"
+                class="ml-2 white--text"
                 color="secondary"
               >
                 <v-icon>mdi-download</v-icon>Download
               </v-btn>
             </a>
             <v-btn
-              class="ml-2"
+              class="ml-2 white--text"
               color="red"
               :loading="state.loading"
               :disabled="state.loading"
