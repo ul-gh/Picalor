@@ -63,6 +63,10 @@ class Picalor():
         self.measurement_daemon = PicalorMeasurementDaemon(pi, self.state, self.api)
 
     def run_app(self):
+        """Start application.
+        
+        Must be called when not running picalor_core.py as a script.
+        """
         logger.debug("run_app() called")
         if self.app_running:
             logger.warning("Already running!")

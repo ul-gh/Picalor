@@ -1,6 +1,15 @@
+/** @file useStoreApi.js
+ *
+ * MQTT API implementation for Picalor application
+ */
+
 //import { reactive, ref, watch } from "vue";
 import Vue from 'vue'
 
+/** @brief Returns initialized state object and dispatch function in a wrapper object
+ *
+ * Foo
+ */
 export default function useStoreApi(api) {
   const debug_state_updates = false;
   //const state = reactive({

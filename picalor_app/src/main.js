@@ -16,7 +16,7 @@ const api_conf = {
   data_topic: "data/picalor/core",
   cmd_req_topic: "cmd/picalor/core/req",
   cmd_resp_topic: "cmd/picalor/core/resp",
-  client_id: "",
+  id_prefix: "picalor_gui_",
 };
 
 const api = new MqttWebsocketsApi(api_conf);

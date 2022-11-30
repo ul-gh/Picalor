@@ -1,0 +1,21 @@
+var searchData=
+[
+  ['r_5f0_5fdn_0',['r_0_dn',['../classpicalor_1_1picalor__measurement_1_1_measurement.html#a54e0f22b311cc085c46b705cc4ae6a72',1,'picalor::picalor_measurement::Measurement']]],
+  ['r_5f0_5fup_1',['r_0_up',['../classpicalor_1_1picalor__measurement_1_1_measurement.html#add8f2a1e8f39b2421756256c9dec42ca',1,'picalor::picalor_measurement::Measurement']]],
+  ['r_5foffset_5fdn_2',['r_offset_dn',['../classpicalor_1_1picalor__measurement_1_1_measurement.html#a945a65491a6b4089d9134d89d05cdf73',1,'picalor::picalor_measurement::Measurement']]],
+  ['r_5foffset_5fup_3',['r_offset_up',['../classpicalor_1_1picalor__measurement_1_1_measurement.html#aafc298e7fd91ddfdfb10f7c80ff0e7a1',1,'picalor::picalor_measurement::Measurement']]],
+  ['r_5fs_5fdn_4',['r_s_dn',['../classpicalor_1_1picalor__measurement_1_1_measurement.html#a9d150b92cf42a22328db88d2039393ca',1,'picalor::picalor_measurement::Measurement']]],
+  ['r_5fs_5fup_5',['r_s_up',['../classpicalor_1_1picalor__measurement_1_1_measurement.html#a1f1a734a7e87d9075ddaa84f810b8398',1,'picalor::picalor_measurement::Measurement']]],
+  ['r_5fwires_5fdn_6',['r_wires_dn',['../classpicalor_1_1picalor__measurement_1_1_measurement.html#ad245a2112731cfb44d9a74c35b2f5a98',1,'picalor::picalor_measurement::Measurement']]],
+  ['r_5fwires_5fup_7',['r_wires_up',['../classpicalor_1_1picalor__measurement_1_1_measurement.html#a263948984dcb06b6f497c6bb5b681694',1,'picalor::picalor_measurement::Measurement']]],
+  ['record_5ftimestamp_8',['record_timestamp',['../namespacepicalor_1_1picalor__xlsx.html#ad6fd2acf35a60b5e063a28074a040d40',1,'picalor::picalor_xlsx']]],
+  ['report_5frow_5fofst_9',['REPORT_ROW_OFST',['../namespacepicalor_1_1picalor__xlsx.html#a43f4ae797e804add8f1d355bb7443334',1,'picalor::picalor_xlsx']]],
+  ['report_5fsheet_5fname_10',['REPORT_SHEET_NAME',['../namespacepicalor_1_1picalor__xlsx.html#a60942e00d1726d7812d3d2a80bbb0839',1,'picalor::picalor_xlsx']]],
+  ['results_11',['results',['../classpicalor_1_1picalor__state_1_1_picalor_state.html#a3dfc26e4134069451daf0a2ed963f07d',1,'picalor::picalor_state::PicalorState']]],
+  ['results_5fadc_12',['results_adc',['../classpicalor_1_1picalor__measurement_1_1_measurement.html#a041c008b6e32826474b7b392831797c1',1,'picalor::picalor_measurement::Measurement']]],
+  ['results_5fadc_5ftemp_5fchs_13',['results_adc_temp_chs',['../classpicalor_1_1picalor__measurement_1_1_measurement.html#aff76bad19b3e753c3c30f3c818c87d28',1,'picalor::picalor_measurement::Measurement']]],
+  ['results_5flog_14',['results_log',['../classpicalor_1_1picalor__measurement_1_1_measurement.html#a2644de8de547beab0f616dc09fe4e94a',1,'picalor::picalor_measurement::Measurement']]],
+  ['results_5fmeas_15',['results_meas',['../classpicalor_1_1picalor__measurement_1_1_measurement.html#a2f39d9ab934a70661234060ff965ac00',1,'picalor::picalor_measurement::Measurement']]],
+  ['results_5fupdate_5flock_16',['results_update_lock',['../classpicalor_1_1picalor__state_1_1_picalor_state.html#af36e6c896e8a0f85474c0d984c2525b9',1,'picalor::picalor_state::PicalorState']]],
+  ['row_17',['row',['../namespacepicalor_1_1picalor__xlsx.html#a65f4e7ec220dfbcd7c002c6c7fbee111',1,'picalor::picalor_xlsx']]]
+];
