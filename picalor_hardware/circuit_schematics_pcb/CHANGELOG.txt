@@ -1,0 +1,3 @@
+V. 0.2		Initial development prototype with PCB
+V. 0.2.1	Bugfix release, fix unrouted trace on MOSI
+                + move AGND-DGND bridge away from underneath ADC

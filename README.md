@@ -31,6 +31,13 @@ Supported hardware:
     - 2x ADS1256 24-Bit 8-ch ADC
 * Waveshare "High Precision AD/DA board"
 
-[Picalor Core (server component)](https://ul-gh.github.io/Picalor/picalor_core/html/namespaces.html)
+## Hardware:
+![Picalor PCB Photo](https://ul-gh.github.io/Picalor/picalor_hardware/picalor_pcb_photo.jpg)
 
-[Picalor App (browser client)](https://ul-gh.github.io/Picalor/picalor_app/html/files.html)
+* PCB Design Files: [picalor_hardware](picalor_hardware/)
+* [Circuit Diagram (PDF)](https://ul-gh.github.io/Picalor/picalor_hardware/picalor_pcb.pdf)
+* [Circuit BOM (HTML)](https://ul-gh.github.io/Picalor/picalor_hardware/ibom.html)
+
+## Software:
+* [Picalor Core (server component)](https://ul-gh.github.io/Picalor/picalor_core/html/namespaces.html)
+* [Picalor App (browser client)](https://ul-gh.github.io/Picalor/picalor_app/html/files.html)
