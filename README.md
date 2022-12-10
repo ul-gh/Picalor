@@ -38,6 +38,6 @@ Supported hardware:
 * [Circuit Diagram (PDF)](https://ul-gh.github.io/Picalor/picalor_hardware/picalor_pcb.pdf)
 * [Circuit BOM (HTML)](https://ul-gh.github.io/Picalor/picalor_hardware/ibom.html)
 
-## Software:
+## Software Documentation (Generated):
 * [Picalor Core (server component)](https://ul-gh.github.io/Picalor/picalor_core/html/namespaces.html)
 * [Picalor App (browser client)](https://ul-gh.github.io/Picalor/picalor_app/html/files.html)
