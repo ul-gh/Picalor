@@ -182,7 +182,6 @@ class PicalorMeasurementDaemon():
                 self._clear_datalog_requested.clear()
                 self.state.results.measurement_thread_initialize_datalog()
                 self._log_start_time = time.time()
-                self.api.send_response("clear__datalog")
             log = self.state.results["data_log"]
             t = round(time.time() - self._log_start_time, self._log_time_digits)
             log["time_s"].append(t)

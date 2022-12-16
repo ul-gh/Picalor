@@ -276,7 +276,7 @@ export default function useStoreApi(api) {
       let success = false;
       try {
         success = await api.query("clear__datalog");
-        _show_success("Datalog deleted!");
+        _show_success("Datalog will be reset when new recording is started!");
         state.loading = false;
       } catch (e) {
         _log_error(e);
