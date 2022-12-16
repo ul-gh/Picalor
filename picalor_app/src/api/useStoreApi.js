@@ -283,12 +283,13 @@ export default function useStoreApi(api) {
       }
       return success;
     },
-    async tare__power() {
+    async tare__power(ch_idx) {
       state.loading = true;
       let success = false;
       try {
-        success = await api.query("clear__datalog");
-        _show_success("Datalog deleted!");
+        const ch_idx_ret = await api.query("tare__power", ch_idx);
+        _show_success(`Tared power for channel: ${ch_idx_ret}`);
+        success = true;
         state.loading = false;
       } catch (e) {
         _log_error(e);

@@ -58,6 +58,7 @@ class PicalorActions():
     # API response will be sent from measurement thread
     def clear__datalog(self, _):
         self.core.measurement_daemon.clear_datalog()
+        return json.dumps(True)
     
     def tare__power(self, ch_idx):
         self.core.measurement_daemon.tare_power(ch_idx)
