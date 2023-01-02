@@ -291,7 +291,7 @@ FLOW_LITER_SEC = 10e-3
             # Pt1000 sensor measurement channel configuration
             # Array of dictionaries / Javascript objects
             [[adcs.adc_1.temp_chs]]
-            info = "Cold Inlet"
+            info = "Sensor 1.1"
             mux = "NEG_AIN1"
             adc_offset = 0
             # Series resistance (bridge high-side) of Pt1000 sensor channels in Ohms
@@ -308,7 +308,7 @@ FLOW_LITER_SEC = 10e-3
             cal_wh_b = false
 
             [[adcs.adc_1.temp_chs]]
-            info = "Heat Source 1"
+            info = "Sensor 1.2"
             mux = "NEG_AIN2"
             adc_offset = 0
             r_s = 9962.00
@@ -319,7 +319,7 @@ FLOW_LITER_SEC = 10e-3
             cal_wh_b = false
 
             [[adcs.adc_1.temp_chs]]
-            info = "Heat Source 2"
+            info = "Sensor 1.3"
             mux = "NEG_AIN3"
             adc_offset = 0
             r_s = 9962.00
@@ -330,7 +330,7 @@ FLOW_LITER_SEC = 10e-3
             cal_wh_b = false
 
             [[adcs.adc_1.temp_chs]]
-            info = "Heat Source 3"
+            info = "Sensor 1.4"
             mux = "NEG_AIN4"
             adc_offset = 0
             r_s = 9962.00
@@ -341,7 +341,7 @@ FLOW_LITER_SEC = 10e-3
             cal_wh_b = false
 
             [[adcs.adc_1.temp_chs]]
-            info = "Heat Source 4"
+            info = "Sensor 1.5"
             mux = "NEG_AIN5"
             adc_offset = 0
             r_s = 9962.00
@@ -352,7 +352,7 @@ FLOW_LITER_SEC = 10e-3
             cal_wh_b = false
 
             [[adcs.adc_1.temp_chs]]
-            info = "Heat Source 5"
+            info = "Sensor 1.6"
             mux = "NEG_AIN6"
             adc_offset = 0
             r_s = 9962.00
@@ -363,7 +363,7 @@ FLOW_LITER_SEC = 10e-3
             cal_wh_b = false
 
             [[adcs.adc_1.temp_chs]]
-            info = "Heat Source 6"
+            info = "Sensor 1.7"
             mux = "NEG_AIN7"
             adc_offset = 0
             r_s = 9962.00
@@ -415,7 +415,7 @@ FLOW_LITER_SEC = 10e-3
 
             # Pt1000 sensor measurement channel configuration
             [[adcs.adc_2.temp_chs]]
-            info = "Cold Inlet"
+            info = "Sensor 2.1"
             mux = "NEG_AIN1"
             adc_offset = 0
             # Series resistance (bridge high-side) of Pt1000 sensor channels in Ohms
@@ -432,7 +432,7 @@ FLOW_LITER_SEC = 10e-3
             cal_wh_b = false
 
             [[adcs.adc_2.temp_chs]]
-            info = "Heat Source 1"
+            info = "Sensor 2.2"
             mux = "NEG_AIN2"
             adc_offset = 0
             r_s = 9962.00
@@ -443,7 +443,7 @@ FLOW_LITER_SEC = 10e-3
             cal_wh_b = false
 
             [[adcs.adc_2.temp_chs]]
-            info = "Heat Source 2"
+            info = "Sensor 2.3"
             mux = "NEG_AIN3"
             adc_offset = 0
             r_s = 9962.00
@@ -454,7 +454,7 @@ FLOW_LITER_SEC = 10e-3
             cal_wh_b = false
 
             [[adcs.adc_2.temp_chs]]
-            info = "Heat Source 3"
+            info = "Sensor 2.4"
             mux = "NEG_AIN4"
             adc_offset = 0
             r_s = 9962.00
@@ -465,7 +465,7 @@ FLOW_LITER_SEC = 10e-3
             cal_wh_b = false
 
             [[adcs.adc_2.temp_chs]]
-            info = "Heat Source 4"
+            info = "Sensor 2.5"
             mux = "NEG_AIN5"
             adc_offset = 0
             r_s = 9962.00
@@ -476,7 +476,7 @@ FLOW_LITER_SEC = 10e-3
             cal_wh_b = false
 
             [[adcs.adc_2.temp_chs]]
-            info = "Heat Source 5"
+            info = "Sensor 2.6"
             mux = "NEG_AIN6"
             adc_offset = 0
             r_s = 9962.00
@@ -487,7 +487,7 @@ FLOW_LITER_SEC = 10e-3
             cal_wh_b = false
 
             [[adcs.adc_2.temp_chs]]
-            info = "Heat Source 6"
+            info = "Sensor 2.7"
             mux = "NEG_AIN7"
             adc_offset = 0
             r_s = 9962.00

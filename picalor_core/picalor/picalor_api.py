@@ -55,7 +55,6 @@ class PicalorActions():
         self.core.measurement_daemon.set_datalog_enabled(value)
         return json.dumps(value)
 
-    # API response will be sent from measurement thread
     def clear__datalog(self, _):
         self.core.measurement_daemon.clear_datalog()
         return json.dumps(True)
@@ -111,7 +110,7 @@ class PicalorApi():
             msg = f"Error in API command handler.\nError details: {e}"
             logger.exception(msg)
             # String returned is valid JSON
-            self.send_response(cmd, f'"Core: {msg}"', False)
+            self.send_response(cmd, f'"Core: {msg}"', success=False)
 
     # "push" means publishing on the data topic channel
     def push_live_data(self):

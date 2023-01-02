@@ -1,31 +1,41 @@
 <template align="start">
 <div>
   <LiveEditTable
-    title = "Measurement Calibration"
+    :key="state.config_stale"
+    title = "Measurement Channel Setup"
     empty_text="No Measurements Configured"
     :headers="headers"
     :rows_feedback="state.config.measurements.chs"
-    :show_add_delete="false"
+    :default_row="state.config.measurements.default_ch"
     row_key="info"
     @content_changed="rows => dispatch('set__config_measurements_chs', rows)"
   >
-    <template v-slot:footer-prepend>
-      <v-btn
+    <template v-slot:footer-actions="{ editing, do_save, do_cancel }">
+      <span v-if="editing">
+        <v-btn
           :loading="state.loading"
           :disabled="state.loading"
           color="warning"
           class="ml-2 white--text"
-          @click="upload__config">
+          @click="do_save(); dispatch('upload__config')">
           <v-icon dark>mdi-arrow-top-right-thick</v-icon>Apply/Upload
-      </v-btn>
-      <v-btn
+        </v-btn>
+        <v-btn
           :loading="state.loading"
           :disabled="state.loading"
           color="red"
           class="ml-2 white--text"
-          @click="upload_save__config">
+          @click="do_save(); dispatch('upload_save__config')">
           <v-icon dark>mdi-content-save</v-icon>Upload and Save as Default
-      </v-btn>
+        </v-btn>
+        <v-btn
+          color="warning"
+          class="ml-2 white--text"
+          @click="do_cancel()"
+        >
+          <v-icon dark>mdi-cancel</v-icon>Cancel Edit
+        </v-btn>
+      </span>
     </template>
   </LiveEditTable>
 </div>
@@ -39,72 +49,59 @@ export default {
     LiveEditTable,
   },
 
-  data() {
-    return {
-      headers: [
+  computed: {
+    headers() {
+      return [
         {
           text: "Description",
           value: "info",
           input_type: "text",
           sortable: false,
         },
+        // active flag is set from PicalorDisplay tab
         {
-          text: "Base Resistance Up",
-          value: "r_0_up",
-          input_type: "number",
+          text: "ADC",
+          value: "adc_device",
+          input_type: "text",
           sortable: false,
         },
         {
-          text: "Base Resistance Dn",
-          value: "r_0_dn",
+          text: "Temp CH Up",
+          value: "temp_ch_up",
           input_type: "number",
+          min: 0,
+          max: Object.values(this.state.config.adcs)[0].temp_chs.length - 1,
+          digits: 0,
           sortable: false,
         },
         {
-          text: "Wiring Resistance Up",
-          value: "r_wires_up",
+          text: "Temp CH Dn",
+          value: "temp_ch_dn",
           input_type: "number",
+          min: 0,
+          max: Object.values(this.state.config.adcs)[0].temp_chs.length - 1,
+          digits: 0,
           sortable: false,
         },
         {
-          text: "Wiring Resistance Dn",
-          value: "r_wires_dn",
+          text: "Flow Sensor",
+          value: "flow_sensor",
           input_type: "number",
+          min: 0,
+          max: this.state.config.flow_sensors.length - 1,
+          digits: 0,
           sortable: false,
         },
         {
-          text: "Power Offset",
-          value: "power_offset",
+          text: "Flow Temp CH",
+          value: "flow_sensor_temp_ch",
           input_type: "number",
+          min: 0,
+          max: Object.values(this.state.config.adcs)[0].temp_chs.length - 1,
+          digits: 0,
           sortable: false,
         },
-        {
-          text: "Power Gain",
-          value: "power_gain",
-          input_type: "number",
-          sortable: false,
-        },
-      ],
-  };},
-
-  methods: {
-    async upload__config() {
-      try {
-        await this.dispatch("upload__config")
-        this.snack_note_text = `Config uploaded to device!`;
-      } catch (e) {
-        this.snack_note_text = `Error uploading: ${e}`;
-      }
-      this.snack_note_visible = true;
-    },
-    async upload_save__config() {
-      try {
-        await this.dispatch("upload_save__config")
-        this.snack_note_text = `Config uploaded to device!`;
-      } catch (e) {
-        this.snack_note_text = `Error uploading: ${e}`;
-      }
-      this.snack_note_visible = true;
+      ]
     },
   },
 
@@ -115,8 +112,7 @@ export default {
   },
 
   mounted() {
-    // this.create_meas_conf_rows();
-    window.mc = this;
+    window.chs = this;
   },
 };
 </script>

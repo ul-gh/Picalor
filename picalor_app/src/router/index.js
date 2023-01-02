@@ -1,8 +1,8 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import PicalorDisplay from '../views/PicalorDisplay.vue'
-import PicalorMeasConfig from '../views/PicalorMeasConfig.vue'
-import PicalorAdcCalibration from '../views/PicalorAdcCalibration.vue'
+import PicalorDisplay from '../views/MainDisplay.vue'
+import PicalorMeasConfig from '../views/MeasConfig.vue'
+import PicalorAdcCalibration from '../views/AdcCalibration.vue'
 
 Vue.use(VueRouter)
 

@@ -174,12 +174,13 @@ export default function useStoreApi(api) {
     },
     async activate__datalog(value) {
       state.loading = true;
-      let success = false;
+      let success = true;
       try {
-        success = await api.query("set__datalog_enabled", value);
-        _show_success("Data log enabled on device!");
+        new_state = await api.query("set__datalog_enabled", value);
+        _show_success(`Data log ${new_state === true ? "enabled" : "disabled"} on device!`);
         state.loading = false;
       } catch (e) {
+        success = false;
         _log_error(e);
       }
       return success;

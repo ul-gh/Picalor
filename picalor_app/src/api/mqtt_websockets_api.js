@@ -76,6 +76,12 @@ export default class MqttWebsocketsApi {
      * 
      * The response is supposed to contain a non-empty JSON string as payload.
      * 
+     * Implementation detail: For each cmd query, a new array of callbacks is
+     * registered on the cmd_resp_topic topic for the respective cmd.
+     * 
+     * When a response arrives for the respective cmd, all callbacks within
+     * that array are called.
+     * 
      * @param cmd String name of the command
      * @param value Any Javascript object which can be sent as a JSON string
      * @return Promise resolving with the payload parsed as a Javascript object

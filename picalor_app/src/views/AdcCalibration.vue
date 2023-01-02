@@ -49,7 +49,7 @@
 </template>
 
 <script>
-import LiveEditTable from "../widgets/LiveEditTable.vue";
+import LiveEditTable from "../widgets/LiveRowEditTable.vue";
 
 export default {
   components: {

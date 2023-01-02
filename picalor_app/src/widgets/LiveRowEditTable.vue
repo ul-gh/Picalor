@@ -4,7 +4,7 @@
   <v-data-table
     :headers="headers_actions"
     :items="rows"
-    @click:row="start_edit()"
+    @dblclick:row="on_dblclick"
     class="elevation-1" fixed-header
   >
     <v-divider inset></v-divider>
@@ -15,34 +15,17 @@
     <!-- eslint-disable-next-line -->
     <template v-slot:footer.prepend>
       <v-toolbar flat color="white">
-        <div class="d-flex w-100">
-          <v-btn
-              v-if="show_add_delete"
-              color="primary"
-              class="ml-2 white--text"
-              @click="add_row">
-              <v-icon dark>mdi-plus</v-icon>Add
-          </v-btn>
-          <slot
-            name="footer-prepend"
-          >
-          </slot>
-          <slot
-            name="footer-actions"
-            :editing="editing"
-            :do_save="stop_save_edit"
-            :do_cancel="cancel_edit"
-          >
+          <div class="d-flex w-100">
             <v-btn
-              v-if="editing"
-              color="warning"
-              class="ml-2 white--text"
-              @click="cancel_edit()"
-            >
-              <v-icon dark>mdi-cancel</v-icon>Cancel Edit
+                v-if="show_add_delete"
+                color="primary"
+                class="ml-2 white--text"
+                @click="add_row">
+                <v-icon dark>mdi-plus</v-icon>Add
             </v-btn>
-          </slot>
-        </div>
+            <slot name="footer-prepend"> <!-- Can add more buttons here -->
+            </slot>
+          </div>
       </v-toolbar>
     </template>
     <template
@@ -53,7 +36,8 @@
         :key="header.value"
         v-if='header.input_type === "switch"'
         v-model="item[header.value]"
-        @change="$emit('content_changed', rows)"
+        @change="emit_immediately"
+        :readonly="index !== edited_idx"
         :autofocus="true"
       >
       </v-switch>
@@ -61,6 +45,7 @@
         :key="header.value"
         v-else-if='header.input_type === "text"'
         v-model="item[header.value]"
+        :readonly="index !== edited_idx"
         :hide-details="true" :autofocus="true" dense single-line
       >
       </v-text-field>
@@ -69,6 +54,7 @@
         v-else-if='header.input_type === "number"'
         :value="format_number_cell(item, header)"
         @change="text => set_number_item(text, item, header)"
+        :readonly="index !== edited_idx"
         :rules="[v => validate_number(v, header)]"
         :hint="number_hint(header)"
         :hide-details="false" :autofocus="true" dense single-line
@@ -83,11 +69,22 @@
     </template>
     <!-- eslint-disable-next-line -->
     <template v-slot:item.actions="{ item, index }">
-      <span class="nowrap">
+      <span v-if="index === edited_idx" class="nowrap">
+        <v-icon color="red" class="mr-3" @click="stop_edit(true)">
+          mdi-window-close
+        </v-icon>
+        <v-icon color="green" @click="stop_edit()">
+          mdi-content-save
+        </v-icon>
+      </span>
+      <span v-else class="nowrap">
+        <v-icon color="green" class="mr-3" @click="edit_row(item, index)">
+          mdi-pencil
+        </v-icon>
         <v-icon v-if="show_add_delete" class="mr-3" color="red" @click="delete_row(item)">
           mdi-delete
         </v-icon>
-        <slot name="item-actions-append" :item="item" :index="index">
+        <slot name="item-actions-not-edited-append" :item="item" :index="index">
         </slot>
       </span>
     </template>
@@ -145,10 +142,15 @@ export default {
     return {
       rows: Array(),
       editing: Boolean(),
+      edited_row_copy: Object(),
+      edited_idx: -1,
     }
   },
 
   methods: {
+    emit_immediately(){
+      this.$emit('content_changed', this.rows)
+    },
     validate_number(value, header) {
       const num = Number(value);
       if (isNaN(num)){
@@ -197,20 +199,26 @@ export default {
       this.$emit("content_changed", this.rows);
     },
 
-    start_edit() {
+    edit_row(row, index) {
       this.editing = true;
+      this.edited_idx = index;
+      this.edited_row_copy = Object.assign({}, row);
       document.addEventListener("keydown", this.on_keydown);
     },
 
-    stop_save_edit() {
+    stop_edit(abort=false) {
       document.removeEventListener("keydown", this.on_keydown);
-      this.$emit("content_changed", this.rows);
-      this.editing = false;
-    },
-
-    cancel_edit() {
-      document.removeEventListener("keydown", this.on_keydown);
-      this.rows = Array.from(this.rows_feedback);
+      if (abort) {
+        if (this.edited_row_copy === null) {
+          this.rows.pop();
+        } else {
+          // Does not work: this.rows[this.edited_idx] = this.edited_row_copy;
+          Vue.set(this.rows, this.edited_idx, this.edited_row_copy);
+        }
+      } else {
+        this.$emit("content_changed", this.rows);
+      }
+      this.edited_idx = -1;
       this.editing = false;
     },
 
@@ -222,16 +230,22 @@ export default {
 
     add_row() {
       const new_row = Object.assign({}, this.default_row);
+      this.edited_idx = this.rows.length;
       this.rows.push(new_row);
-      this.start_edit();
+      this.edited_row_copy = null;
+      this.edit_row(new_row);
     },
 
     on_keydown(keyb_evt) {
       if (keyb_evt.key === "Escape") {
-        this.cancel_edit();
+        this.stop_edit(true);
       } else if (keyb_evt.key === "Enter") {
-        this.stop_save_edit();
+        this.stop_edit();
       }
+    },
+
+    on_dblclick(_mouse_event, slot_data) {
+      this.edit_row(slot_data.item, slot_data.index);
     },
 
     column_slot(key) {

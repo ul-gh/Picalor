@@ -1,12 +1,11 @@
 <template align="start">
 <div>
   <LiveEditTable
-    :key="state.config_stale"
-    title = "Measurement Channel Setup"
+    title = "Measurement Calibration"
     empty_text="No Measurements Configured"
     :headers="headers"
     :rows_feedback="state.config.measurements.chs"
-    :default_row="state.config.measurements.default_ch"
+    :show_add_delete="false"
     row_key="info"
     @content_changed="rows => dispatch('set__config_measurements_chs', rows)"
   >
@@ -16,7 +15,7 @@
           :disabled="state.loading"
           color="warning"
           class="ml-2 white--text"
-          @click="dispatch('upload__config')">
+          @click="upload__config">
           <v-icon dark>mdi-arrow-top-right-thick</v-icon>Apply/Upload
       </v-btn>
       <v-btn
@@ -24,7 +23,7 @@
           :disabled="state.loading"
           color="red"
           class="ml-2 white--text"
-          @click="dispatch('upload_save__config')">
+          @click="upload_save__config">
           <v-icon dark>mdi-content-save</v-icon>Upload and Save as Default
       </v-btn>
     </template>
@@ -33,66 +32,79 @@
 </template>
 
 <script>
-import LiveEditTable from "../widgets/LiveEditTable.vue";
+import LiveEditTable from "../widgets/LiveRowEditTable.vue";
 
 export default {
   components: {
     LiveEditTable,
   },
 
-  computed: {
-    headers() {
-      return [
+  data() {
+    return {
+      headers: [
         {
           text: "Description",
           value: "info",
           input_type: "text",
           sortable: false,
         },
-        // active flag is set from PicalorDisplay tab
         {
-          text: "ADC",
-          value: "adc_device",
-          input_type: "text",
-          sortable: false,
-        },
-        {
-          text: "Temp CH Up",
-          value: "temp_ch_up",
+          text: "Base Resistance Up",
+          value: "r_0_up",
           input_type: "number",
-          min: 0,
-          max: Object.values(this.state.config.adcs)[0].temp_chs.length - 1,
-          digits: 0,
           sortable: false,
         },
         {
-          text: "Temp CH Dn",
-          value: "temp_ch_dn",
+          text: "Base Resistance Dn",
+          value: "r_0_dn",
           input_type: "number",
-          min: 0,
-          max: Object.values(this.state.config.adcs)[0].temp_chs.length - 1,
-          digits: 0,
           sortable: false,
         },
         {
-          text: "Flow Sensor",
-          value: "flow_sensor",
+          text: "Wiring Resistance Up",
+          value: "r_wires_up",
           input_type: "number",
-          min: 0,
-          max: this.state.config.flow_sensors.length - 1,
-          digits: 0,
           sortable: false,
         },
         {
-          text: "Flow Temp CH",
-          value: "flow_sensor_temp_ch",
+          text: "Wiring Resistance Dn",
+          value: "r_wires_dn",
           input_type: "number",
-          min: 0,
-          max: Object.values(this.state.config.adcs)[0].temp_chs.length - 1,
-          digits: 0,
           sortable: false,
         },
-      ]
+        {
+          text: "Power Offset",
+          value: "power_offset",
+          input_type: "number",
+          sortable: false,
+        },
+        {
+          text: "Power Gain",
+          value: "power_gain",
+          input_type: "number",
+          sortable: false,
+        },
+      ],
+  };},
+
+  methods: {
+    async upload__config() {
+      try {
+        await this.dispatch("upload__config")
+        this.snack_note_text = `Config uploaded to device!`;
+      } catch (e) {
+        this.snack_note_text = `Error uploading: ${e}`;
+      }
+      this.snack_note_visible = true;
+    },
+    async upload_save__config() {
+      try {
+        await this.dispatch("upload_save__config")
+        this.snack_note_text = `Config uploaded to device!`;
+      } catch (e) {
+        this.snack_note_text = `Error uploading: ${e}`;
+      }
+      this.snack_note_visible = true;
     },
   },
 
@@ -103,7 +115,8 @@ export default {
   },
 
   mounted() {
-    window.chs = this;
+    // this.create_meas_conf_rows();
+    window.mc = this;
   },
 };
 </script>

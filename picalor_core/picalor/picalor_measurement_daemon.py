@@ -127,7 +127,6 @@ class PicalorMeasurementDaemon():
     def _configure_measurements_enable_acquisition(self):
         name = threading.current_thread().name
         logger.debug(f"_configure_measurements called from thread: {name}")
-
         try:
             n = len(self.state.conf["measurements"]["chs"])
             logger.info(f"Number of heat measurement channels configured: {n}")
@@ -151,7 +150,6 @@ class PicalorMeasurementDaemon():
                     return
                 m = Measurement(self.state, i, adc_obj, flow_sensor, fluid)
                 self.measurements.append(m)
-
         except Exception as e:
             msg = f"Error configuring measurements!\nError: {e}"
             logger.exception(msg)
@@ -185,7 +183,6 @@ class PicalorMeasurementDaemon():
             log = self.state.results["data_log"]
             t = round(time.time() - self._log_start_time, self._log_time_digits)
             log["time_s"].append(t)
-
             for ch, data in enumerate(self.state.results["measurements"]["chs"]):
                 log["t_upstream"][ch].append(data["t_upstream"])
                 log["t_downstream"][ch].append(data["t_downstream"])

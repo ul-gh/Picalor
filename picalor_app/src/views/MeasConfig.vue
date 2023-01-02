@@ -20,8 +20,8 @@
 
 <script>
 import CommonSettings from "../components/CommonSettings.vue"
-import ChSetup from "../components/PicalorChSetup.vue";
-import MeasCalibration from "../components/PicalorMeasCalibration.vue";
+import ChSetup from "../components/ChSetup.vue";
+import MeasCalibration from "../components/MeasCalibration.vue";
 
 export default {
   components: {
