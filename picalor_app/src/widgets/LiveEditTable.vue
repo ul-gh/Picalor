@@ -4,9 +4,8 @@
   <v-data-table
     :headers="headers_actions"
     :items="rows"
-    @click:row="start_edit()"
     class="elevation-1" fixed-header
-  >
+  > 
     <v-divider inset></v-divider>
     <template v-slot:top>
       <slot name="top-prepend">
@@ -47,38 +46,45 @@
     </template>
     <template
       v-for="header in headers"
-      v-slot:[column_slot(header.value)]="{ item, index }"
+      v-slot:[column_slot(header.value)]="{ item }"
     >
-      <v-switch
-        :key="header.value"
-        v-if='header.input_type === "switch"'
-        v-model="item[header.value]"
-        @change="$emit('content_changed', rows)"
-        :autofocus="true"
-      >
-      </v-switch>
-      <v-text-field
-        :key="header.value"
-        v-else-if='header.input_type === "text"'
-        v-model="item[header.value]"
-        :hide-details="true" :autofocus="true" dense single-line
-      >
-      </v-text-field>
-      <v-text-field
-        :key="header.value"
-        v-else-if='header.input_type === "number"'
-        :value="format_number_cell(item, header)"
-        @change="text => set_number_item(text, item, header)"
-        :rules="[v => validate_number(v, header)]"
-        :hint="number_hint(header)"
-        :hide-details="false" :autofocus="true" dense single-line
-      >
-      </v-text-field>
-      <span
-        :key="header.value"
-        v-else
-      >
-        {{format_display_cell(item, header)}}
+      <span :key="header.value">
+        <v-switch
+          v-if='header.input_type === "switch"'
+          v-model="item[header.value]"
+          @change="$emit('content_changed', rows)"
+          :autofocus="true"
+        >
+        </v-switch>
+        <v-text-field
+          v-else-if='header.input_type === "text"'
+          v-model="item[header.value]"
+          :hide-details="true" :autofocus="true" dense single-line
+        >
+        </v-text-field>
+        <!-- I don't know why only the number input is not reactive without the update_trigger approach.. -->
+        <v-text-field
+          v-else-if='header.input_type === "number"'
+          :key="update_trigger"
+          :value="format_number_cell(item, header)"
+          @change="text => set_number_item(text, item, header)"
+          :rules="[v => validate_number(v, header)]"
+          :hint="number_hint(header)"
+          :hide-details="false" :autofocus="true" dense single-line
+        >
+        </v-text-field>
+        <v-select
+          v-else-if='header.input_type === "select"'
+          :items="typeof(header.select_items) === 'function' ? header.select_items(item) : header.select_items"
+          v-model="item[header.value]"
+          :hide-details="true" :autofocus="true" dense single-line
+        >
+        </v-select>
+        <span
+          v-else
+        >
+          {{format_display_cell(item, header)}}
+        </span>
       </span>
     </template>
     <!-- eslint-disable-next-line -->
@@ -99,7 +105,6 @@
 </template>
 
 <script>
-import Vue from 'vue'
 
 export default {
   name: "LiveEditTable",
@@ -115,6 +120,10 @@ export default {
   },
 
   emits: ["content_changed"],
+
+  created() {
+    document.addEventListener("input", this.start_edit);
+  },
 
   computed: {
     headers_actions() {
@@ -135,7 +144,8 @@ export default {
         if (this.editing || rows_in.length == 0) {
             return;
         }
-        this.rows = Array.from(rows_in);
+        this.rows = Array.from(rows_in, row => Object.assign({}, row));
+        this.update_trigger = ! this.update_trigger;
       },
       immediate: true
     }
@@ -143,8 +153,9 @@ export default {
 
   data() {
     return {
-      rows: Array(),
-      editing: Boolean(),
+      rows: [],
+      editing: false,
+      update_trigger: false,
     }
   },
 
@@ -210,8 +221,9 @@ export default {
 
     cancel_edit() {
       document.removeEventListener("keydown", this.on_keydown);
-      this.rows = Array.from(this.rows_feedback);
+      this.rows = Array.from(this.rows_feedback, row => Object.assign({}, row));
       this.editing = false;
+      this.update_trigger = ! this.update_trigger;
     },
 
     delete_row(row) {

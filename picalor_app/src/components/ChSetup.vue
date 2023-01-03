@@ -2,7 +2,7 @@
 <div>
   <LiveEditTable
     :key="state.config_stale"
-    title = "Measurement Channel Setup"
+    title="Measurement Channel Setup"
     empty_text="No Measurements Configured"
     :headers="headers"
     :rows_feedback="state.config.measurements.chs"
@@ -62,43 +62,48 @@ export default {
         {
           text: "ADC",
           value: "adc_device",
-          input_type: "text",
+          input_type: "select",
+          select_items: Object.keys(this.state.config.adcs),
           sortable: false,
         },
         {
           text: "Temp CH Up",
           value: "temp_ch_up",
-          input_type: "number",
-          min: 0,
-          max: Object.values(this.state.config.adcs)[0].temp_chs.length - 1,
-          digits: 0,
+          input_type: "select",
+          select_items: ({ adc_device }) => Array.from(
+            this.state.config.adcs[adc_device].temp_chs,
+            (ch, index) => {return {text: ch.info, value: index};}
+          ),
           sortable: false,
         },
         {
           text: "Temp CH Dn",
           value: "temp_ch_dn",
-          input_type: "number",
-          min: 0,
-          max: Object.values(this.state.config.adcs)[0].temp_chs.length - 1,
-          digits: 0,
+          input_type: "select",
+          select_items: ({ adc_device }) => Array.from(
+            this.state.config.adcs[adc_device].temp_chs,
+            (ch, index) => {return {text: ch.info, value: index};}
+          ),
           sortable: false,
         },
         {
           text: "Flow Sensor",
           value: "flow_sensor",
-          input_type: "number",
-          min: 0,
-          max: this.state.config.flow_sensors.length - 1,
-          digits: 0,
+          input_type: "select",
+          select_items: Array.from(
+            this.state.config.flow_sensors,
+            (sensor, index) => {return {text: sensor.info, value: index};}
+          ),
           sortable: false,
         },
         {
           text: "Flow Temp CH",
           value: "flow_sensor_temp_ch",
-          input_type: "number",
-          min: 0,
-          max: Object.values(this.state.config.adcs)[0].temp_chs.length - 1,
-          digits: 0,
+          input_type: "select",
+          select_items: ({ adc_device }) => Array.from(
+            this.state.config.adcs[adc_device].temp_chs,
+            (ch, index) => {return {text: ch.info, value: index};}
+          ),
           sortable: false,
         },
       ]

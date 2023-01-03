@@ -7,7 +7,7 @@
   </v-row>
   <v-row>
     <v-col>
-    <ChSetup></ChSetup>
+    <ChSetup adc_device="adc_1"></ChSetup>
     </v-col>
   </v-row>
   <v-row>

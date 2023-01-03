@@ -130,7 +130,16 @@ export default function useStoreApi(api) {
           },
         ]
       },
-      flow_sensors: [],
+      flow_sensors: [
+        {
+          type: "pulse",
+          info: "Flow Sensor 1",
+        },
+        {
+          type: "fixed",
+          info: "Fixed Flow A",
+        },
+      ],
       adcs: {
         adc_1: {
           ads1256_config: {},
@@ -138,8 +147,63 @@ export default function useStoreApi(api) {
           r_ref: {},
           temp_chs: [
             {
-              info: "Cold Inlet",
+              info: "Sensor 1.1",
               mux: "NEG_AIN1",
+              adc_offset: 0,
+              // Series resistance (bridge high-side) of Pt1000 sensor channels in Ohms
+              // r_s: 9962.59,
+              r_s: 9962.00,
+              // Resistance offset for HW channel calibration.
+              r_offset: 0.000,
+              // Two-point-calibration known resistances (calibration standards)
+              cal_r_a: 1098.5,
+              cal_r_b: 2191.1,
+              // Corresponding internal read-out values (wheatstone factor)
+              cal_wh_a: 1.0,
+              cal_wh_b: 1.0,
+            },
+            {
+              info: "Sensor 1.2",
+              mux: "NEG_AIN2",
+              adc_offset: 0,
+              // Series resistance (bridge high-side) of Pt1000 sensor channels in Ohms
+              // r_s: 9962.59,
+              r_s: 9962.00,
+              // Resistance offset for HW channel calibration.
+              r_offset: 0.000,
+              // Two-point-calibration known resistances (calibration standards)
+              cal_r_a: 1098.5,
+              cal_r_b: 2191.1,
+              // Corresponding internal read-out values (wheatstone factor)
+              cal_wh_a: 1.0,
+              cal_wh_b: 1.0,
+            },
+          ]
+        },
+        adc_2: {
+          ads1256_config: {},
+          aincom: {},
+          r_ref: {},
+          temp_chs: [
+            {
+              info: "Sensor 2.1",
+              mux: "NEG_AIN1",
+              adc_offset: 0,
+              // Series resistance (bridge high-side) of Pt1000 sensor channels in Ohms
+              // r_s: 9962.59,
+              r_s: 9962.00,
+              // Resistance offset for HW channel calibration.
+              r_offset: 0.000,
+              // Two-point-calibration known resistances (calibration standards)
+              cal_r_a: 1098.5,
+              cal_r_b: 2191.1,
+              // Corresponding internal read-out values (wheatstone factor)
+              cal_wh_a: 1.0,
+              cal_wh_b: 1.0,
+            },
+            {
+              info: "Sensor 2.2",
+              mux: "NEG_AIN2",
               adc_offset: 0,
               // Series resistance (bridge high-side) of Pt1000 sensor channels in Ohms
               // r_s: 9962.59,
@@ -176,8 +240,8 @@ export default function useStoreApi(api) {
       state.loading = true;
       let success = true;
       try {
-        new_state = await api.query("set__datalog_enabled", value);
-        _show_success(`Data log ${new_state === true ? "enabled" : "disabled"} on device!`);
+        const log_enabled = await api.query("set__datalog_enabled", value);
+        _show_success(`Data log ${log_enabled === true ? "enabled" : "disabled"} on device!`);
         state.loading = false;
       } catch (e) {
         success = false;

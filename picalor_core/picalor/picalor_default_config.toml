@@ -242,7 +242,7 @@ SENSITIVITY = 8500
 [[flow_sensors]]
 # We can use fixed values for fluid flow rate
 type = "fixed"
-info = "Fixed Flow 1"
+info = "Fixed Flow A"
 # Flow in liters per second
 FLOW_LITER_SEC = 10e-3
 
