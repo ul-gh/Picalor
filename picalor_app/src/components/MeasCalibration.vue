@@ -9,30 +9,39 @@
     row_key="info"
     @content_changed="rows => dispatch('set__config_measurements_chs', rows)"
   >
-    <template v-slot:footer-prepend>
-      <v-btn
+    <template v-slot:footer-actions="{ editing, do_save, do_cancel }">
+      <span v-if="editing">
+        <v-btn
           :loading="state.loading"
           :disabled="state.loading"
           color="warning"
           class="ml-2 white--text"
-          @click="upload__config">
+          @click="do_save(); dispatch('upload__config')">
           <v-icon dark>mdi-arrow-top-right-thick</v-icon>Apply/Upload
-      </v-btn>
-      <v-btn
+        </v-btn>
+        <v-btn
           :loading="state.loading"
           :disabled="state.loading"
           color="red"
           class="ml-2 white--text"
-          @click="upload_save__config">
+          @click="do_save(); dispatch('upload_save__config')">
           <v-icon dark>mdi-content-save</v-icon>Upload and Save as Default
-      </v-btn>
+        </v-btn>
+        <v-btn
+          color="warning"
+          class="ml-2 white--text"
+          @click="do_cancel()"
+        >
+          <v-icon dark>mdi-cancel</v-icon>Cancel Edit
+        </v-btn>
+      </span>
     </template>
   </LiveEditTable>
 </div>
 </template>
 
 <script>
-import LiveEditTable from "../widgets/LiveRowEditTable.vue";
+import LiveEditTable from "../widgets/LiveEditTable.vue";
 
 export default {
   components: {
@@ -86,27 +95,6 @@ export default {
         },
       ],
   };},
-
-  methods: {
-    async upload__config() {
-      try {
-        await this.dispatch("upload__config")
-        this.snack_note_text = `Config uploaded to device!`;
-      } catch (e) {
-        this.snack_note_text = `Error uploading: ${e}`;
-      }
-      this.snack_note_visible = true;
-    },
-    async upload_save__config() {
-      try {
-        await this.dispatch("upload_save__config")
-        this.snack_note_text = `Config uploaded to device!`;
-      } catch (e) {
-        this.snack_note_text = `Error uploading: ${e}`;
-      }
-      this.snack_note_visible = true;
-    },
-  },
 
   beforeCreate() {
       // Shortcuts for global state store

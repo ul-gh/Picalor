@@ -1,6 +1,6 @@
 <template align="start">
   <v-container fluid>
-    <LiveEditTable
+    <LiveRowEditTable
       title = "ADC Calibration"
       empty_text="No ADCs Configured"
       :headers="headers"
@@ -44,16 +44,16 @@
           Calibrate Resistance B
         </v-btn>
       </template>
-    </LiveEditTable>
+    </LiveRowEditTable>
   </v-container>
 </template>
 
 <script>
-import LiveEditTable from "../widgets/LiveRowEditTable.vue";
+import LiveRowEditTable from "../widgets/LiveRowEditTable.vue";
 
 export default {
   components: {
-    LiveEditTable,
+    LiveRowEditTable,
   },
 
   data() {

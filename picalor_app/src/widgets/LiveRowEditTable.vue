@@ -30,41 +30,45 @@
     </template>
     <template
       v-for="header in headers"
-      v-slot:[column_slot(header.value)]="{ item, index }"
+      v-slot:[column_slot(header.value)]="{ item }"
     >
-      <v-switch
-        :key="header.value"
-        v-if='header.input_type === "switch"'
-        v-model="item[header.value]"
-        @change="emit_immediately"
-        :readonly="index !== edited_idx"
-        :autofocus="true"
-      >
-      </v-switch>
-      <v-text-field
-        :key="header.value"
-        v-else-if='header.input_type === "text"'
-        v-model="item[header.value]"
-        :readonly="index !== edited_idx"
-        :hide-details="true" :autofocus="true" dense single-line
-      >
-      </v-text-field>
-      <v-text-field
-        :key="header.value"
-        v-else-if='header.input_type === "number"'
-        :value="format_number_cell(item, header)"
-        @change="text => set_number_item(text, item, header)"
-        :readonly="index !== edited_idx"
-        :rules="[v => validate_number(v, header)]"
-        :hint="number_hint(header)"
-        :hide-details="false" :autofocus="true" dense single-line
-      >
-      </v-text-field>
-      <span
-        :key="header.value"
-        v-else
-      >
-        {{format_display_cell(item, header)}}
+      <span :key="header.value">
+        <v-switch
+          v-if='header.input_type === "switch"'
+          v-model="item[header.value]"
+          @change="$emit('content_changed', rows)"
+          :autofocus="true"
+        >
+        </v-switch>
+        <v-text-field
+          v-else-if='header.input_type === "text"'
+          v-model="item[header.value]"
+          :hide-details="true" :autofocus="true" dense single-line
+        >
+        </v-text-field>
+        <!-- I don't know why only the number input is not reactive without the update_trigger approach.. -->
+        <v-text-field
+          v-else-if='header.input_type === "number"'
+          :key="update_trigger"
+          :value="format_number_cell(item, header)"
+          @change="text => set_number_item(text, item, header)"
+          :rules="[v => validate_number(v, header)]"
+          :hint="number_hint(header)"
+          :hide-details="false" :autofocus="true" dense single-line
+        >
+        </v-text-field>
+        <v-select
+          v-else-if='header.input_type === "select"'
+          :items="typeof(header.select_items) === 'function' ? header.select_items(item) : header.select_items"
+          v-model="item[header.value]"
+          :hide-details="true" :autofocus="true" dense single-line
+        >
+        </v-select>
+        <span
+          v-else
+        >
+          {{format_display_cell(item, header)}}
+        </span>
       </span>
     </template>
     <!-- eslint-disable-next-line -->
@@ -133,6 +137,7 @@ export default {
             return;
         }
         this.rows = Array.from(rows_in);
+        this.update_trigger = ! this.update_trigger;
       },
       immediate: true
     }
@@ -144,6 +149,7 @@ export default {
       editing: Boolean(),
       edited_row_copy: Object(),
       edited_idx: -1,
+      update_trigger: false,
     }
   },
 
@@ -215,6 +221,7 @@ export default {
           // Does not work: this.rows[this.edited_idx] = this.edited_row_copy;
           Vue.set(this.rows, this.edited_idx, this.edited_row_copy);
         }
+        this.update_trigger = ! this.update_trigger;
       } else {
         this.$emit("content_changed", this.rows);
       }
