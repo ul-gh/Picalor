@@ -93,7 +93,14 @@
         <v-icon v-if="show_add_delete" class="mr-3" color="red" @click="delete_row(item)">
           mdi-delete
         </v-icon>
-        <slot name="item-actions-append" :item="item" :index="index">
+        <slot
+          name="item-actions-append"
+          :item="item"
+          :index="index"
+          :editing="editing"
+          :do_save="stop_save_edit"
+          :do_cancel="cancel_edit"
+        >
         </slot>
       </span>
     </template>

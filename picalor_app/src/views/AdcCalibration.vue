@@ -1,6 +1,6 @@
 <template align="start">
   <v-container fluid>
-    <LiveRowEditTable
+    <LiveEditTable
       title = "ADC Calibration"
       empty_text="No ADCs Configured"
       :headers="headers"
@@ -9,25 +9,33 @@
       row_key="info"
       @content_changed="update_config_adcs"
     >
-      <template v-slot:footer-prepend>
+      <template v-slot:footer-actions="{ editing, do_save, do_cancel }">
+        <v-btn
+          v-if="editing"
+          color="warning"
+          class="ml-2 white--text"
+          @click="do_cancel()"
+        >
+          <v-icon dark>mdi-cancel</v-icon>Cancel Edit
+        </v-btn>
         <v-btn
           :loading="state.loading"
           :disabled="state.loading"
           color="red"
           class="ml-2 white--text"
-          @click="dispatch('upload_save__config')">
+          @click="do_save(); dispatch('upload_save__config')">
           <v-icon dark>mdi-content-save</v-icon>
-          Store Permanently (Calibrate your channels first!)
+          Store Permanently (Calibrate channels first!)
         </v-btn>
       </template>
-      <template v-slot:item-actions-not-edited-append="{ item, index }">
+      <template v-slot:item-actions-append="{ item, index, do_save }">
         <v-btn
           :loading="state.loading"
           color="secondary"
           class="white--text"
           small
           rounded
-          @click="dispatch('calibrate__temp_channel', item.adc_key, index, 'cal_r_a')"
+          @click="do_save(); dispatch('calibrate__temp_channel', item.adc_key, index, 'cal_r_a', item.cal_r_a)"
           :disabled="item.cal_wh_a !== false && item.cal_wh_b === false"
         >
           Calibrate Resistance A
@@ -38,22 +46,22 @@
           class="white--text"
           small
           rounded
-          @click="dispatch('calibrate__temp_channel', item.adc_key, index, 'cal_r_b')"
+          @click="do_save(); dispatch('calibrate__temp_channel', item.adc_key, index, 'cal_r_b', item.cal_r_b)"
           :disabled="item.cal_wh_a === false && item.cal_wh_b !== false"
         >
           Calibrate Resistance B
         </v-btn>
       </template>
-    </LiveRowEditTable>
+    </LiveEditTable>
   </v-container>
 </template>
 
 <script>
-import LiveRowEditTable from "../widgets/LiveRowEditTable.vue";
+import LiveEditTable from "../widgets/LiveEditTable.vue";
 
 export default {
   components: {
-    LiveRowEditTable,
+    LiveEditTable,
   },
 
   data() {

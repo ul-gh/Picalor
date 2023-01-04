@@ -361,7 +361,7 @@ export default function useStoreApi(api) {
       }
       return success;
     },
-    async calibrate__temp_channel(adc_key, temp_ch_idx, value_key) {
+    async calibrate__temp_channel(adc_key, temp_ch_idx, value_key, cal_resistance) {
       state.loading = true;
       let success = false;
       try {
@@ -369,7 +369,7 @@ export default function useStoreApi(api) {
         temp_ch_idx %= state.config.adcs[adc_key].temp_chs.length;
         state.config.adcs = await api.query(
           "calibrate__temp_channel",
-          {adc_key, temp_ch_idx, value_key}
+          {adc_key, temp_ch_idx, value_key, cal_resistance}
         );
         _show_success(`ADC ${adc_key}, Channel ${temp_ch_idx} calibrated!`);
         state.loading = false;

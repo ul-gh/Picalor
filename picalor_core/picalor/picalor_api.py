@@ -63,13 +63,14 @@ class PicalorActions():
         self.core.measurement_daemon.tare_power(ch_idx)
         return json.dumps(ch_idx)
     
-    def calibrate__temp_channel(self, values):
+    def calibrate__temp_channel(self, cal_args):
         self.core.measurement_daemon.calibrator.calibrate_channel(
-            values["adc_key"],
-            values["temp_ch_idx"],
-            values["value_key"],
+            cal_args["adc_key"],
+            cal_args["temp_ch_idx"],
+            cal_args["value_key"],
+            cal_args["cal_resistance"]
         )
-        return json.dumps(values)
+        return json.dumps(self.state.conf.adcs)
     
     # Saves and responds immediately as save__results is a blocking call
     # (waits only very briefly for spinlock)

@@ -233,8 +233,10 @@ class Calibrator():
     # This is called from the API.
     # calibration data for the requested temperature channel has been acquired
     # and calibration results have been written back to state.conf.
-    def calibrate_channel(self, adc_key, temp_ch_idx, value_key):
+    def calibrate_channel(self, adc_key, temp_ch_idx, value_key, cal_resistance):
         msg = ""
+        if cal_resistance < 0.0 or value > 10000.0:
+            msg = f"Cal resistance must be between 0.0 and 10000.0!"
         if not value_key in ("cal_r_a", "cal_r_b"):
             msg = f"Invalid resistance value key: {value_key}"
         if not adc_key in self.state.conf["adcs"].keys():
@@ -256,7 +258,7 @@ class Calibrator():
         # from config. Config must be populated with resistance value in advance.
         self.state.config_update_lock.acquire()
         temp_ch_conf = self.state.conf["adcs"][adc_key]["temp_chs"][temp_ch_idx]
-        cal_resistance = temp_ch_conf[value_key]
+        temp_ch_conf[value_key] = cal_resistance
         wh_a = temp_ch_conf["cal_wh_a"]
         wh_b = temp_ch_conf["cal_wh_b"]
         # If both channels have previous calibration results,
